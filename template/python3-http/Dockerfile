@@ -17,6 +17,9 @@ RUN apt-get update \
   && ln -s /usr/bin/python3 python \
   && pip3 install --upgrade pip
 
+RUN apt update
+RUN apt install -y git
+
 # Add non root user
 #RUN addgroup -S app && adduser app -S -G app
 #RUN chown app /home/app
@@ -26,6 +29,10 @@ RUN apt-get update \
 ENV PATH=$PATH:/home/app/.local/bin
 
 WORKDIR /home/app/
+
+
+RUN git clone https://github.com/tensorflow/nmt.git
+
 
 COPY index.py           .
 COPY requirements.txt   .
