@@ -10,7 +10,7 @@ RUN chmod +x /usr/bin/fwatchdog
 #RUN apk --no-cache add ${ADDITIONAL_PACKAGE}
 
 
-ADDED:
+#ADDED:
 RUN apt-get update \
   && apt-get install -y python3-pip python3-dev \
   && cd /usr/local/bin \
