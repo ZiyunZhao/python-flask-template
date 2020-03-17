@@ -31,8 +31,8 @@ ENV PATH=$PATH:/home/app/.local/bin
 WORKDIR /home/app/
 
 
-RUN git clone https://github.com/tensorflow/nmt.git
-
+#RUN git clone https://github.com/tensorflow/nmt.git
+RUN git clone https://github.com/ZiyunZhao/nmt.git
 
 COPY index.py           .
 COPY requirements.txt   .
@@ -46,7 +46,9 @@ WORKDIR /home/app/function/
 COPY function/requirements.txt	.
 RUN pip install --user -r requirements.txt
 
-RUN git clone https://github.com/tensorflow/nmt.git
+#RUN git clone https://github.com/tensorflow/nmt.git
+RUN git clone https://github.com/ZiyunZhao/nmt.git
+
 
 WORKDIR /home/app/
 
