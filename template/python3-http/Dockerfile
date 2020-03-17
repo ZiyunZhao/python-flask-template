@@ -46,6 +46,8 @@ WORKDIR /home/app/function/
 COPY function/requirements.txt	.
 RUN pip install --user -r requirements.txt
 
+RUN git clone https://github.com/tensorflow/nmt.git
+
 WORKDIR /home/app/
 
 #USER root
