@@ -61,10 +61,14 @@ def call_handler(path):
     event = Event()
     context = Context()
     print("===============")
-    print(type(event))
-    print(event)
-    print(type(context))
-    print(context)
+    print(type(event.body))
+    print(event.body)
+    print(type(event.headers))
+    print(event.headers)
+    print(event.method)
+    print(event.query)
+    print(event.path)
+    print(context.hostname)
     print("==============")
     
     
