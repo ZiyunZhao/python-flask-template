@@ -60,6 +60,14 @@ def format_response(resp):
 def call_handler(path):
     event = Event()
     context = Context()
+    print("===============")
+    print(type(event))
+    print(event)
+    print(type(context))
+    print(context)
+    print("==============")
+    
+    
     response_data = handler.handle(event, context)
     
     resp = format_response(response_data)
