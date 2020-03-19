@@ -6,7 +6,9 @@ import subprocess
 import os
 import sys
 
-@app.route('/')
+#@app.route('/')
+@app.route('/', defaults={'path': ''}, methods=['GET', 'PUT', 'POST', 'PATCH', 'DELETE'])
+@app.route('/<path:path>', methods=['GET', 'PUT', 'POST', 'PATCH', 'DELETE'])
 def handle():
     command = "cd nmt && python -m nmt.nmt \
     --out_dir=./nmt/tmp/nmt_model \
@@ -33,11 +35,7 @@ def create_app(argument):
     return app
 
 if __name__ == '__main__':
-    #parser = argparse.ArgumentParser()
-    #parser.add_argument("--text", required=True)
-    #args = parser.parse_args()
-    #argument = vars(args)["text"]
-    #print(argument)
     argument = sys.stdin.read()
     app = create_app(argument)
-    app.run()
+    serve(app, host='0.0.0.0', port=5000)
+    #app.run()
