@@ -8,10 +8,9 @@ import sys
 from waitress import serve
 
 
-
+@app.route('/')
 #@app.route('/', defaults={'path': ''}, methods=['GET', 'PUT', 'POST', 'PATCH', 'DELETE'])
 #@app.route('/<path:path>', methods=['GET', 'PUT', 'POST', 'PATCH', 'DELETE'])
-@app.route('/')
 def handle():
     command = "cd nmt && python -m nmt.nmt \
     --out_dir=./nmt/tmp/nmt_model \
