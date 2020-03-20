@@ -2,7 +2,7 @@
 from flask import Flask, request, jsonify
 from waitress import serve
 import os
-import sys
+
 from function import handler
 
 app = Flask(__name__)
@@ -58,14 +58,11 @@ def format_response(resp):
 @app.route('/', defaults={'path': ''}, methods=['GET', 'PUT', 'POST', 'PATCH', 'DELETE'])
 @app.route('/<path:path>', methods=['GET', 'PUT', 'POST', 'PATCH', 'DELETE'])
 def call_handler(path):
-    #event = Event()
-    #context = Context()    
-    #response_data = handler.handle(event, context)
-    #resp = format_response(response_data)
-    #return resp
-    return app.config['argument']
+    event = Event()
+    context = Context()    
+    response_data = handler.handle(event, context)
+    resp = format_response(response_data)
+    return resp
 
 if __name__ == '__main__':
-    argument = sys.stdin.read()
-    app.config['argument'] = argument
     serve(app, host='0.0.0.0', port=5000)
