@@ -1,68 +1,41 @@
 #!/usr/bin/env python
-from flask import Flask, request, jsonify
-from waitress import serve
-import os
-
-from function import handler
-
+from flask import Flask
 app = Flask(__name__)
+from nmt.nmt import nmt
+import argparse
+import subprocess
+import os
+import sys
+from waitress import serve
 
-class Event:
-    def __init__(self):
-        self.body = request.get_data()
-        self.headers = request.headers
-        self.method = request.method
-        self.query = request.args
-        self.path = request.path
 
-class Context:
-    def __init__(self):
-        self.hostname = os.environ['HOSTNAME']
+@app.route('/')
+#@app.route('/', defaults={'path': ''}, methods=['GET', 'PUT', 'POST', 'PATCH', 'DELETE'])
+#@app.route('/<path:path>', methods=['GET', 'PUT', 'POST', 'PATCH', 'DELETE'])
+def call_handler():
+    command = "cd nmt && python -m nmt.nmt \
+    --out_dir=./nmt/tmp/nmt_model \
+    --inference_input_file=./nmt/tmp/my_infer_file.vi \
+    --inference_output_file=./nmt/tmp/nmt_model/output_infer && cd .."
+    f = open("./nmt/nmt/tmp/my_infer_file.vi", "w")
+    f.write(app.config["argument"])
+    f.close()
 
-def format_status_code(resp):
-    if 'statusCode' in resp:
-        return resp['statusCode']
-    
-    return 200
+    os.system(command)
+    f = open("./nmt/nmt/tmp/nmt_model/output_infer", "r")
+    content = f.read()
+    f.close()
+    print("============line26=============")
+    return content
 
-def format_body(resp):
-    if 'body' not in resp:
-        return ""
-    elif type(resp['body']) == dict:
-        return jsonify(resp['body'])
-    else:
-        return str(resp['body'])
 
-def format_headers(resp):
-    if 'headers' not in resp:
-        return []
-    elif type(resp['headers']) == dict:
-        headers = []
-        for key in resp['headers'].keys():
-            header_tuple = (key, resp['headers'][key])
-            headers.append(header_tuple)
-        return headers
-    
-    return resp['headers']
 
-def format_response(resp):
-    if resp == None:
-        return ('', 200)
-
-    statusCode = format_status_code(resp)
-    body = format_body(resp)
-    headers = format_headers(resp)
-
-    return (body, statusCode, headers)
-
-@app.route('/', defaults={'path': ''}, methods=['GET', 'PUT', 'POST', 'PATCH', 'DELETE'])
-@app.route('/<path:path>', methods=['GET', 'PUT', 'POST', 'PATCH', 'DELETE'])
-def call_handler(path):
-    event = Event()
-    context = Context()    
-    response_data = handler.handle(event, context)
-    resp = format_response(response_data)
-    return resp
+def create_app(argument):
+    app.config['argument'] = argument
+    return app
 
 if __name__ == '__main__':
+    argument = sys.stdin.read()
+    app = create_app(argument)
     serve(app, host='0.0.0.0', port=5000)
+    #app.run()
