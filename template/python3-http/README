@@ -1,6 +1,17 @@
+For nmt:
+
 1. pull the python3-http template from ZiyunZhao's git repo. 
+faas template pull --overwrite https://github.com/ZiyunZhao/python-flask-template
+
 2. create a new python3-http template. 
+faas new --lang python3-http function-name
+
 3. modify the image path in the .yml file starting with a dockerhub username.
+
 4. modify the requirement.txt in the folder to include the libraries you need.
-5. modify the handler.py 
-5. use the up command to deploy the function. 
+
+5. modify the handler.py in the folder named function-name. 
+
+6. use the up command to deploy the function. 
+sudo faas-cli up -f function-name.yml
+
