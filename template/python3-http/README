@@ -1,0 +1,6 @@
+1. pull the python3-http template from ZiyunZhao's git repo. 
+2. create a new python3-http template. 
+3. modify the image path in the .yml file starting with a dockerhub username.
+4. modify the requirement.txt in the folder to include the libraries you need.
+5. modify the handler.py 
+5. use the up command to deploy the function. 
